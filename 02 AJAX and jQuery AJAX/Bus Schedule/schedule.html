@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bus Schedule</title>
+    <style>
+        #schedule {
+            text-align: center;
+            width: 400px;
+        }
+
+        input {
+            width: 120px;
+        }
+
+        #info {
+            background-color: aquamarine;
+            border: 1px solid black;
+            margin: 0.25em;
+        }
+
+        .info {
+            font-size: 1.5em;
+            padding: 0.25em;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<div id="schedule">
+    <div id="info"><span class="info">Not Connected</span></div>
+    <div id="controls">
+        <input id="depart" value="Depart" type="button" onclick="result.depart()">
+        <input id="arrive" value="Arrive" type="button" onclick="result.arrive()" disabled="true">
+    </div>
+</div>
+<script>
+    function solve() {
+        let isMoving = false;
+        let btnDepart = $('#depart');
+        let btnArrive = $('#arrive');
+        let nextId = 'depot';
+        let currentStop;
+        function getUrl(id){return `https://judgetests.firebaseio.com/schedule/${id}.json`;}
+        function depart() {
+            $.get(getUrl(nextId))
+                    .then(departing)
+                    .catch(displayError);
+        }
+        function departing(info) {
+            currentStop = info.name;
+            nextId = info.next;
+            btnDepart.prop('disabled',true);
+            btnArrive.prop('disabled',false);
+            $('#info .info').text(`Next stop ${currentStop}`)
+        }
+
+        function displayError(err) {
+            $("#stopName").append($("<li>Error</li>"));
+            $('#buses').empty();
+        }
+
+        function arrive() {
+            btnDepart.prop('disabled',false);
+            btnArrive.prop('disabled',true);
+            $('#info .info').text(`Arraving at ${currentStop}`)
+        }
+
+        return {
+            depart,
+            arrive
+        };
+    }
+    let result = solve();
+</script>
+</body>
+</html>
