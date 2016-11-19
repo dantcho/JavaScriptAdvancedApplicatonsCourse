@@ -1,4 +1,4 @@
-(function result() {
+function attachEvents() {
     $('#submit').click(send);
     $('#refresh').click(refresh);
     let databaseString = `https://dancho-softuni-base.firebaseio.com/messenger`;
@@ -36,12 +36,11 @@
             let msg = messages[key].content;
             txt += author + ': ' + msg+'\n';
         }
-        $("#messages").val(txt);
+        $("#messages").text(txt);
 
     }
 
     function displayError(err) {
-        $("#messages").val(err.statusText);
+        $("#messages").text(err.statusText);
     }
-    refresh();
-})();
+}
