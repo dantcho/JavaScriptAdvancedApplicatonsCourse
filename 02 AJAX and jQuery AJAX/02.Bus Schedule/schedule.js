@@ -9,13 +9,9 @@ function solveWorkInJudge() {
     function depart() {
         $('#depart').prop('disabled', true);
         $('#arrive').prop('disabled', false);
-        let ajaxObject = {
-            method: 'GET',
-            url: getUrl(nextStop),
-            success: departing,
-            error: displayError
-        };
-        $.ajax(ajaxObject);
+        $.get(getUrl(nextStop))
+            .then(departing)
+            .catch(displayError);
     }
 
     function departing(info) {
@@ -80,4 +76,4 @@ function solveDontWorkInJudge() {
     }
 }
 
-let result = solveDontWorkInJudge();
+let result = solveWorkInJudge();
