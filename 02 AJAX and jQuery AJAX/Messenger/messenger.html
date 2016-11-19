@@ -27,48 +27,4 @@
 </div>
 </body>
 </html>
-<script>
-    (function () {
-        $('#submit').click(send);
-        $('#refresh').click(refresh);
-        let databaseString = `https://dancho-softuni-base.firebaseio.com/messenger`;
-        let textArea = $('#messages');
-
-        function send() {
-            let author = $('#author').val();
-            let message = $('#content').val();
-            let newMessageJSON = JSON.stringify({
-                author: author,
-                content: message
-            });
-
-            $.post(databaseString + '.json', newMessageJSON)
-                    .then(refresh)
-                    .catch(displayError);
-
-        }
-
-        function refresh() {
-            $.get(databaseString + '.json')
-                    .then(render)
-                    .catch(displayErrors)
-        }
-
-        function render(messages) {
-            let txt = '';
-            for (let key in messages) {
-                let author = messages[key].author;
-                let msg = messages[key].content;
-                txt += author +':' +'\n';
-                txt += msg + '\n';
-            }
-            $("#messages").val(txt);
-
-        }
-
-        function displayError(err) {
-            $("#messages").val(err.statusText);
-        }
-    })();
-
-</script>
+<script src="messenger.js"></script>

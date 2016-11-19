@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <title>Bus Schedule</title>
     <style>
@@ -34,44 +35,8 @@
         <input id="arrive" value="Arrive" type="button" onclick="result.arrive()" disabled="true">
     </div>
 </div>
-<script>
-    function solve() {
-        let isMoving = false;
-        let btnDepart = $('#depart');
-        let btnArrive = $('#arrive');
-        let nextId = 'depot';
-        let currentStop;
-        function getUrl(id){return `https://judgetests.firebaseio.com/schedule/${id}.json`;}
-        function depart() {
-            $.get(getUrl(nextId))
-                    .then(departing)
-                    .catch(displayError);
-        }
-        function departing(info) {
-            currentStop = info.name;
-            nextId = info.next;
-            btnDepart.prop('disabled',true);
-            btnArrive.prop('disabled',false);
-            $('#info .info').text(`Next stop ${currentStop}`)
-        }
 
-        function displayError(err) {
-            $("#stopName").append($("<li>Error</li>"));
-            $('#buses').empty();
-        }
-
-        function arrive() {
-            btnDepart.prop('disabled',false);
-            btnArrive.prop('disabled',true);
-            $('#info .info').text(`Arraving at ${currentStop}`)
-        }
-
-        return {
-            depart,
-            arrive
-        };
-    }
-    let result = solve();
-</script>
 </body>
 </html>
+<script src="schedule.js">
+</script>
