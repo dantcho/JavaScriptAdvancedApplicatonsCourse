@@ -11,10 +11,16 @@ function attachEvents() {
     };
 
     function displayErrors(error) {
-        console.log(error.statusText)
+        $('#error').empty();
+        let errMessage = 'Error: ' + (error ? error.statusText : '');
+        $('#current').hide();
+        $('#upcoming').hide();
+        $('#forecast').append($('<span id="error">').text(errMessage));
+        $('#forecast').fadeIn();
     }
 
     function render([today, upcomming]) {
+        $('#current span').remove();
         $('#current')
             .append($('<span>')
                 .addClass('condition symbol')
@@ -26,12 +32,30 @@ function attachEvents() {
                     .text(today.name))
                 .append($('<span>')
                     .addClass('forecast-data')
-                    .text('' + today.forecast.low + '\u00b0' + today.forecast.high + '\u00b0'))
+                    .text('' + today.forecast.low + '\u00b0/' + today.forecast.high + '\u00b0'))
                 .append($('<span>')
                     .addClass('forecast-data')
                     .text(today.forecast.condition)));
+        $('#upcoming span').remove();
+        for (let i = 0; i <= 2; i++) {
+            $('#upcoming')
+                .append($('<span>')
+                    .addClass('upcoming')
+                    .append($('<span>')
+                        .addClass('symbol')
+                        .text(weatherConditionIcon[upcomming.forecast[i].condition]))
+                    .append($('<span>')
+                        .addClass('forecast-data')
+                        .text(upcomming.forecast[i].high + weatherConditionIcon.Degrees + '/' + upcomming.forecast[i].low + weatherConditionIcon.Degrees))
+                    .append($('<span>')
+                        .addClass('forecast-data')
+                        .text(upcomming.forecast[i].condition))
+                );
+        }
+        $('#error').fadeOut();
+        $('#upcoming').fadeIn();
+        $('#current').fadeIn();
         $('#forecast').fadeIn();
-
 
 
         console.log(today);
@@ -47,6 +71,7 @@ function attachEvents() {
         Promise.all([getCityDB])
             .then(function () {
                 let cityCode = cityBase.find(x=>x.name === city);
+                if (!cityCode)displayErrors();
                 let getForecastToday = $.get({url: baseUrl + 'forecast/today/' + cityCode.code + '.json'})
                     .catch(displayErrors);
                 let getForecastUpcomming = $.get({url: baseUrl + 'forecast/upcoming/' + cityCode.code + '.json'})
