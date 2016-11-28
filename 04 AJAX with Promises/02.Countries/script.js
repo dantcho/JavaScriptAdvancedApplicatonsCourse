@@ -154,7 +154,6 @@
             data: JSON.stringify(putData),
             contentType: 'application/json'
         };
-        if (data)
             $.ajax(request).then(load).catch(displayError);
     }
 
