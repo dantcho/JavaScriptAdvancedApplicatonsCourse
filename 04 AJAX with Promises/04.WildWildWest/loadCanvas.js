@@ -1,6 +1,5 @@
 function loadCanvas(player){
     let canvas = document.getElementById("canvas");
-    $(canvas).fadeIn();
     let ctx = canvas.getContext("2d");
 
     let background = new Image();
