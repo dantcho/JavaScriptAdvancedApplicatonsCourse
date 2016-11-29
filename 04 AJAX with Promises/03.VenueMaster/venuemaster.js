@@ -56,7 +56,8 @@ function renderVenues() {
     let div = $('#venue-info');
     div.empty();
     for (let venue of data) {
-        div.append(`<div class="venue" id="${venue._id}">
+        div.append(`
+<div class="venue" id="${venue._id}">
   <span class="venue-name"><input class="info" type="button" value="More info">${venue.name}</span>
   <div class="venue-details" style="display: none;">
     <table>
